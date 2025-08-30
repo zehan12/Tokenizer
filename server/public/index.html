@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔤 Encode / Decode API Tester</title>
+    <script src="https://unpkg.com/htmx.org@2.0.0"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            max-width: 800px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+
+        pre {
+            background: #eee;
+            padding: 0.5rem;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔤 Tokenizer API Tester (HTMX + Elysia)</h1>
+
+    <!-- ENCODE -->
+    <h2>Encode Text → Token IDs</h2>
+    <form hx-post="/api/v1/token/encode" hx-target="#encode-result" hx-indicator="#encode-spinner">
+        <input type="text" name="text" placeholder="Type something to encode..." required />
+        <button type="submit">Encode</button>
+        <img id="encode-spinner" class="htmx-indicator" width="20"
+            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjE9mwGVWqnfMckGVmFkUZHi50UpF2BjR6KEJ0Wm9l5SUfAdPamTEwnJCdBCgZMiAEMGKRTSOAOARMQdDiAUdhbYH0oJk+17U6t+NqbrmAROA24CwKFERxDixn0+9CIrK6U8+UDfyD4oa1k+yCioCALgQO4hvA04gEmQWzTgEAdN6sawcHwGZObXBEVgAOCdQgCKlLZR9rRkMVvABLR4C18iTSelRN3Wk5FpR9bSgIkS7ZxIQPGAVnG4Ge88IvlEwAQOWIEEBAAZdMAlChKMA==" />
+    </form>
+    <div id="encode-result" class="result">
+        <p>Encoded token IDs will appear here...</p>
+    </div>
+
+    <hr />
+
+    <h2>Decode Token IDs → Text</h2>
+    <form hx-post="/api/v1/token/decode" hx-target="#decode-result" hx-indicator="#decode-spinner">
+        <textarea name="ids" placeholder="Paste array of token IDs like [1104, 25, ...]" rows="3"></textarea>
+        <button type="submit">Decode</button>
+        <img id="decode-spinner" class="htmx-indicator" width="20"
+            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjE9mwGVWqnfMckGVmFkUZHi50UpF2BjR6KEJ0Wm9l5SUfAdPamTEwnJCdBCgZMiAEMGKRTSOAOARMQdDiAUdhbYH0oJk+17U6t+NqbrmAROA24CwKFERxDixn0+9CIrK6U8+UDfyD4oa1k+yCioCALgQO4hvA04gEmQWzTgEAdN6sawcHwGZObXBEVgAOCdQgCKlLZR9rRkMVvABLR4C18iTSelRN3Wk5FpR9bSgIkS7ZxIQPGAVnG4Ge88IvlEwAQOWIEEBAAZdMAlChKMA==" />
+    </form>
+    <div id="decode-result" class="result">
+        <p>Decoded text will appear here...</p>
+    </div>
+</body>
+
+</html>
